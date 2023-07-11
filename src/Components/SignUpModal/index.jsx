@@ -1,9 +1,10 @@
 import React, {useContext, useRef, useState} from 'react'
 import { UserContext } from '../../utils/Context'
 import { useNavigate } from 'react-router-dom'
+import { Toaster, toast } from 'react-hot-toast'
 
 function SignUpModal() {
-  const { modalState, toggleModals, signUp } = useContext(UserContext)
+  const { modalState, toggleModals, signUp, signInWithGoogle } = useContext(UserContext)
   const [validation, setValidation] = useState("")
 
   const navigate = useNavigate()
@@ -18,6 +19,7 @@ function SignUpModal() {
 
   const formRef = useRef()
 
+  /**sending request for sign up */
   const handleForm = async (e) => {
     e.preventDefault();
     if((inputs.current[1].value.length || inputs.current[2].value.length) < 6) {
@@ -26,6 +28,7 @@ function SignUpModal() {
     }
     if(inputs.current[1].value !== inputs.current[2].value){
         setValidation("Passwords do not match !")
+  
         return;
     }
 
@@ -34,10 +37,20 @@ function SignUpModal() {
             inputs.current[0].value,
             inputs.current[1].value
         )
+        
         setValidation("")
         toggleModals("close")
         formRef.current.reset()
         navigate('/private/private-favorites')
+        /*******************************notification ***************************************/
+        toast.success('Your account has been created succesfully !😇', {
+            position: 'top-center',
+            style: {
+                borderRadius: '10px',
+                background: '#333',
+                color: '#fff',
+              },
+        })
         // console.log(credential)
     } catch (err) {
         //console.dir(err)
@@ -51,8 +64,18 @@ function SignUpModal() {
     }
 
   }
+  /**login with google */
+  const signGoogle = async () => {
+    try {
+      await signInWithGoogle()
+      toggleModals("close")
+      navigate('private/private-favorites')
+    } catch (err) {
 
+    }
+  }
 
+/**closing modal */
   const closeModal = () => {
     setValidation("")
     toggleModals("close")
@@ -84,6 +107,10 @@ function SignUpModal() {
                 onSubmit={handleForm}
                 className="sign-up-form"
               >
+                <Toaster
+                    position="bottom-left"
+                    reverseOrder={false}
+                />
                 <div className="mb-3">
                   <label htmlFor="signUpEmail" className="form-label">
                     Email adress
@@ -127,10 +154,19 @@ function SignUpModal() {
                  <p className="text-danger mt-1"> {validation} </p>
 
                 </div>
+                
+                <div style={{display: "flex", flexDirection:"column", justifyContent: "center"}}>
+                  <button className="btn btn-primary my-1 ">Sign Up</button>
+                </div> 
 
-                <button className="btn btn-primary">Submit</button>
               </form>
-
+              <div style={{display: "flex", flexDirection:"column", justifyContent: "center"}}>
+                <button className="btn btn-danger my-2"
+                  onClick={signGoogle}
+                >
+                  Sign In With Google
+                </button>     
+              </div>
             </div>
           </div>
         </div>

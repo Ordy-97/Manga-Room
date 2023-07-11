@@ -1,5 +1,5 @@
 import { MDBContainer } from 'mdb-react-ui-kit'
-import Card from '../../Components/Card'
+import CardWaifuCharacter from '../../Components/CardWaifuCharacter'
 import { Loader } from '../../utils/Loader';
 import { useAxios } from '../../utils/hooks';
 import Categories from '../../Components/Categories';
@@ -18,14 +18,14 @@ function Characters() {
       <Categories />
       {isLoading ? (
         <MDBContainer className='d-flex justify-content-center mt-5'>
-          <Loader /> <br/>
+          <Loader /> <br/><br/><br/><br/><br/><br/>
           Loading...
         </MDBContainer>
         ):(
           <div className="row">
             {imagesList.map((element) => (
               <div className="col-md-4 mb-3">
-                <Card 
+                <CardWaifuCharacter 
                   // key = {`${element}-${index}`}
                   key={element['signature']}
                   url={element['url']}

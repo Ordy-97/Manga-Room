@@ -1,4 +1,5 @@
 import React, { useState, useContext } from 'react';
+import UserConnected from '../UserConnected';
 import {
   MDBNavbar,
   MDBContainer,
@@ -11,28 +12,19 @@ import {
   MDBBtn
 } from 'mdb-react-ui-kit';
 
+import logo from '../../assets/logoMR.png'
 import { Link } from 'react-router-dom';
 import { UserContext } from '../../utils/Context';
-import { signOut } from 'firebase/auth';
-import { auth } from '../../firebase-config';
-import { useNavigate } from 'react-router-dom';
+
 
 
 export default function Header() {
 
   const [showNavColor, setShowNavColor] = useState(false);
-  const { toggleModals } = useContext(UserContext)
 
-  const navigate = useNavigate()
+  const { toggleModals, currentUser } = useContext(UserContext)
 
-  const logOut = async () => {
-    try {
-      await signOut(auth)
-      navigate('/')
-    } catch (error) {
-      alert("For some reasons, we can't deconnect! Please check your internet connexion and retry.")
-    }
-  }
+
 
   // console.log(modalState)
 
@@ -41,7 +33,10 @@ export default function Header() {
 
       <MDBNavbar  expand='lg'  dark className='shadow-5-strong p-1 fixed-top' style={{backgroundColor : '#000000'}} >
         <MDBContainer >
-          <MDBNavbarBrand href='/' className=' '>Manga Room</MDBNavbarBrand>
+          <MDBNavbarBrand href='/' className=' '>
+            <img src={logo} alt="" height='50' />
+            Manga Room
+          </MDBNavbarBrand>
           <MDBNavbarToggler
             type='button'
             data-target='#navbarColor02'
@@ -63,12 +58,15 @@ export default function Header() {
             </MDBNavbarNav>
           </MDBCollapse>
         </MDBContainer>
-        <MDBBtn onClick={() => toggleModals("signIn")}>
-          Sign In
-        </MDBBtn>
-        <MDBBtn onClick={logOut}>
-          Log out
-        </MDBBtn>
+
+        {/*******Affichage conditionnée du bouton sign in et de l'icône de user connecté en fonction de currentUser(s'il est vide ou pas)****/}
+
+        {!currentUser ? (
+          <MDBBtn onClick={() => toggleModals("signIn")}>
+            Sign In <i class="fa-solid fa-user fa-beat" style={{color: "#f1f4f9"}} />
+          </MDBBtn>
+        ) : (<UserConnected />)}
+
       </MDBNavbar>
 
     </>

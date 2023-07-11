@@ -3,7 +3,7 @@ import React from 'react'
 import '../../css/card.css'
 
 
-function Card({url}) {
+function CardWaifuCharacter({url}) {
 
   return (
     <div className="card">
@@ -16,5 +16,5 @@ function Card({url}) {
   )
 }
 
-export default Card
+export default CardWaifuCharacter
 
