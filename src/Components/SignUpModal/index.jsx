@@ -51,7 +51,7 @@ function SignUpModal() {
                 color: '#fff',
               },
         })
-        // console.log(credential)
+         console.log(credential)
     } catch (err) {
         //console.dir(err)
         if(err.code === "auth/email-already-in-use"){

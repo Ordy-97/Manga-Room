@@ -42,7 +42,7 @@ function SignInModal() {
             color: '#fff',
           },
         })
-        // console.log(credential)
+         console.log(credential)
     } catch {
         //console.dir(err)
         setValidation("Email and/or password incorrect !")
