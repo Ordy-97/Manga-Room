@@ -2,7 +2,10 @@ import React,{useState , createContext, useEffect} from 'react'
  import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-  onAuthStateChanged
+  sendPasswordResetEmail,
+  signInWithPopup,
+  onAuthStateChanged,
+  GoogleAuthProvider
  } from "firebase/auth"
 
  import { auth } from '../../firebase-config'
@@ -23,18 +26,48 @@ export const UrlProvider = ({ children }) => {
     )
 }
 
+//context for ID of favorite image
+export const IdContext = createContext()
+
+export const IdProvider = ({ children }) => {
+  const [IdFavorite, setIdFavorite] = useState('')
+  const ChangeId = (newId) => {
+    setIdFavorite(newId)
+  }
+
+  return (
+    <IdContext.Provider value={{IdFavorite, ChangeId}}>
+      {children}
+    </IdContext.Provider>
+  )
+}
+
+
+//context ID for deleting an image favorite
+
+
+
 //context for toggle modals
 
 export const UserContext = createContext()
 
 export function UserContextProvider({children}) {
 
+  const googleProvider = new GoogleAuthProvider()
+
   const signUp = (email, pwd) => createUserWithEmailAndPassword(auth, email, pwd)// fonction pour créer un user
   const signIn = (email, pwd) => signInWithEmailAndPassword(auth, email, pwd)// fonction de connexion pour un user
+  const resetPassword = (email) => sendPasswordResetEmail(auth, email)// fonction pour réinitialiser le mot de passe
+  const signInWithGoogle = () => signInWithPopup(auth, googleProvider)// fonction pour l'authentification google
 
     const [loadingData, setLoadingdata] = useState(true)
     const [currentUser, setCurrentUser] = useState()
 
+  /***onAuthStateChanged : fonction qui surveille si un utilisateur s'est connecté ou déconnecté.
+   * renvoit un objet currentUser qui sera soit null(si aucun user n'est connecté) soit un profil user dans le cas contraire.
+   * s'exécute à chaque rendu de l'application à travers la fonction unSubscribe.
+  */
+ 
   useEffect(() =>{
     const unSubscribe = onAuthStateChanged((auth), (currentUser) => {
       setCurrentUser(currentUser)
@@ -45,13 +78,13 @@ export function UserContextProvider({children}) {
   }, [])
 
 
-    // modal
-    const [modalState, setModalState] = useState({
-      signUpModal: false,
-      signInModal: false
-    })
+  // modal *****************************************************************************************/
+  const [modalState, setModalState] = useState({
+    signUpModal: false,
+    signInModal: false
+  })
   
-    const toggleModals = modal => {
+  const toggleModals = (modal) => {
       if(modal === "signIn") {
         setModalState({
           signUpModal: false,
@@ -70,11 +103,11 @@ export function UserContextProvider({children}) {
           signInModal: false
         })
       }
-    }
+  }
   
     return (
-      <UserContext.Provider value={{modalState, toggleModals, signUp, signIn, currentUser}}>
+      <UserContext.Provider value={{modalState, toggleModals, signUp, signIn, resetPassword, signInWithGoogle, currentUser}}>
         {!loadingData && children}
       </UserContext.Provider>
     )
-  }
+}

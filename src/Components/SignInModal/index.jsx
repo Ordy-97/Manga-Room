@@ -18,6 +18,7 @@ function SignInModal() {
     }
   }
 
+  // Recupère les valeurs envoyées au Ref par addInputs()
   const formRef = useRef()
 
   const handleForm = async (e) => {

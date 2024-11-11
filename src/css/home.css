@@ -4,6 +4,7 @@
 }
 .button {
     font-family: Snell Roundhand, cursive;
-    background : none;
+    background : linear-gradient(45deg,rgba(40, 29, 40, 0.22),rgba(255, 28, 247, 0.8));
     font-size: 18px;
+    border: 2px solid;
 }

@@ -20,3 +20,12 @@ export const Loader = styled.div`
     height: 0;
     width: 0;
 `
+export const SmallLoader = styled.div`
+    padding: 10px;
+    border: 5px solid ${colors.primary};
+    border-bottom-color: transparent;
+    border-radius: 80px;
+    animation: ${rotate} 1s infinite linear;
+    height: 0;
+    width: 0;
+`

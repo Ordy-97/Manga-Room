@@ -4,7 +4,7 @@ import Header from './Components/Header';
 import Home from './Pages/Home';
 import Characters from './Pages/Characters'
 import Quotes from './Pages/Quotes'
-import { UrlProvider } from './utils/Context';
+import { UrlProvider, IdProvider } from './utils/Context';
 import SignInModal from './Components/SignInModal';
 import SignUpModal from './Components/SignUpModal';
 import Private from "./Pages/Private"
@@ -17,6 +17,7 @@ export default function App() {
   return (
     <Router>
      <UrlProvider>
+     <IdProvider>
         <Header />
         <Routes>
           <Route exact path="/" element={<Home />} />
@@ -29,6 +30,7 @@ export default function App() {
         <SignInModal />
         <SignUpModal />
         <Toaster position='bottom-left' />
+      </IdProvider>
      </UrlProvider>
   </Router>
   )
